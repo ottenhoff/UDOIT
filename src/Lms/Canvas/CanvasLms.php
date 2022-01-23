@@ -82,14 +82,12 @@ class CanvasLms implements LmsInterface {
         $params = array_merge($globalParams, $lmsParams);
         $queryStr = http_build_query($params);
 
-        return "{$baseUrl}api/lti/authorize_redirect?{$queryStr}";
+        return "{$baseUrl}?{$queryStr}";
     }
 
     public function getKeysetUrl()
     {
-        $baseUrl = $_ENV['JWK_BASE_URL'];
-
-        return "{$baseUrl}api/lti/security/jwks";
+        return $_ENV['JWK_KEYSET_URL'];
     }
 
     public function saveTokenToSession($token)
@@ -112,27 +110,20 @@ class CanvasLms implements LmsInterface {
         ];
         $baseUrl = $this->util->getCurrentDomain();
 
-        return "https://{$baseUrl}/login/oauth2/auth?" . http_build_query($query);
+        return "https://{$baseUrl}/imsblis/lti13/token/2?" . http_build_query($query);
     }
 
     public function getOauthTokenUri(Institution $institution)
     {
         $baseUrl = $this->util->getCurrentDomain();
 
-        return "https://{$baseUrl}/login/oauth2/token";
+        return "https://{$baseUrl}/imsblis/lti13/token/2";
     }
 
 
     public function testApiConnection(User $user)
     {
-        $url = 'users/self';
-        $apiDomain = $this->getApiDomain($user);
-        $apiToken = $this->getApiToken($user);
-
-        $canvasApi = new CanvasApi($apiDomain, $apiToken);
-        $response = $canvasApi->apiGet($url);
-
-        return ($response->getStatusCode() < 400);
+        return true;
     }
 
     /**

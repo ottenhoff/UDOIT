@@ -43,7 +43,7 @@ class LmsUserService {
         $lms = $this->lmsApi->getLms();
 
         if (empty($apiKey)) {
-            return false;
+            //return false;
         }
 
         try {
